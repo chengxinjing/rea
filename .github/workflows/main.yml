@@ -1,0 +1,23 @@
+name: Sync Fork from Upstream
+on:
+  # 定时：每6小时执行一次，可自定义
+  schedule:
+    - cron: '0 */2 * * *'
+  # 可选：手动点按钮触发
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync fork upstream
+        uses: tgymnich/fork-sync@v2.0.0
+        with:
+          # 上游原仓库：原作者/仓库名
+          upstream: morluto/rea
+          # 分支：上游main同步到你fork的main
+          base: main
+          head: main
+          # 合并策略：force 强制覆盖（⚠️ 如果你fork里自己有改动会被冲掉！）
+          merge_method: rebase
+          token: ${{ secrets.GITHUB_TOKEN }}
